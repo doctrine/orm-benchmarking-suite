@@ -13,10 +13,10 @@ class BookInsertionTest extends PerformanceTest
         $author = $systemUnderTest->em->getReference('Perf\Orm\Author', $author->id);
 
         $book = new Book();
-        $book->title = 'Hello' . $currentExecution;
+        $book->title  = 'Hello' . $currentExecution;
         $book->author = $author;
-        $book->isbn = '1234';
-        $book->price = $currentExecution;
+        $book->isbn   = substr(sha1($currentExecution), 0, 24);
+        $book->price  = $currentExecution;
 
         $systemUnderTest->em->persist($book);
 

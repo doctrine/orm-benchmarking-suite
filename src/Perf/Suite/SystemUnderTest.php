@@ -38,4 +38,9 @@ abstract class SystemUnderTest
     public function end()
     {
     }
+
+    public function createResult($duration)
+    {
+        return array('duration' => $duration);
+    }
 }

@@ -12,6 +12,7 @@ class OrmSystem extends SystemUnderTest
     public $em;
     public $books = array();
     public $authors = array();
+    public $queryCount;
     private $rootPath;
 
     public function __construct($rootPath)
@@ -29,6 +30,7 @@ class OrmSystem extends SystemUnderTest
         \Doctrine\ORM\Tools\Setup::registerAutoloadGit($this->rootPath);
 
         $cache = new \Doctrine\Common\Cache\ArrayCache();
+        $this->queryCount = new DbalQueryCountLogger();
 
         $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Orm"));
 
@@ -38,6 +40,7 @@ class OrmSystem extends SystemUnderTest
         $config->setProxyDir(__DIR__ . "/proxies");
         $config->setProxyNamespace('Proxies');
         $config->setAutoGenerateProxyClasses(false);
+        $config->setSQLLogger($this->queryCount);
 
         $dbParams = array('driver' => 'pdo_sqlite', 'memory' => true);
 
@@ -72,6 +75,7 @@ class OrmSystem extends SystemUnderTest
     public function warmUp()
     {
         $this->em->clear();
+        $this->queryCount->count = 0;
     }
 
     /**
@@ -89,5 +93,10 @@ class OrmSystem extends SystemUnderTest
     {
         $this->em->flush();
         $this->em->commit();
+    }
+
+    public function createResult($duration)
+    {
+        return array('duration' => $duration, 'queryCount' => $this->queryCount->count);
     }
 }

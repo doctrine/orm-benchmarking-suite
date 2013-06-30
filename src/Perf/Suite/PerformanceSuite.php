@@ -20,7 +20,7 @@ class PerformanceSuite
         foreach ($this->tests as $test) {
             $duration = $test['test']->run($systemUnderTest, $test['times']);
 
-            $results[$test['test']->getName()] = $duration;
+            $results[$test['test']->getName()] = $systemUnderTest->createResult($duration);
         }
 
         $systemUnderTest->tearDown();
