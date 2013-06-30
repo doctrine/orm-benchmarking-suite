@@ -8,8 +8,6 @@ if (!isset($argv[1])) {
 $currentPath = realpath(dirname($argv[0]));
 $path = $argv[1];
 
-exit;
-
 chdir($path);
 $log = shell_exec("git tag -l");
 $lines = explode("\n", $log);
