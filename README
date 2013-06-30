@@ -1,32 +1,26 @@
-Requirements
-------------
+# Performance Benchmark for Doctrine ORM
 
-* linux or bsd system
-* PHP 5.2 or greater
-* pdo_sqlite
+Allows testing relative performance of versions to each other, given
+a Doctrine2 Git checkout root directory.
 
-Running All The Benchmarks
---------------------------
+Code base is originally from the http://code.google.com/p/php-orm-benchmark/
+suite, but heavily modified to allow for easier extension and cross version testing.
 
-    > cd /path/to/php-orm-benchmark
-    > php TestRunner.php
+## Usage
 
-Running One Of The Benchmarks
------------------------------
+    php run-all-tags.php <doctrine2-git-dir>
 
-    > cd /path/to/php-orm-benchmark
-    > cd propel_15
-    > php TestRunner.php
+Outputs a CSV format
 
-Test Scenarios
---------------
+    php run.php <doctrine2-git-dir>
 
-1. Mass insertion: Tests model objects and save() operations.
+Outputs a JSON with the Tests executed, their duration and the SQL Queries used.
 
-2. Retrieve By Pk: Tests basic hydration
+## Missing performance tests
 
-3. Complex Query an OR but no hydration: Tests Query parsing
-
-4. Basic Query with 5 results: Tests hydration and collections
-
-5. Query with join: Tests join hydration
+* Events
+* Merge/Detach
+* Metadata Serialization/Unserialization
+* DQL Parsing
+* Heavy ChangeSet computation (only a light one for now)
+* Big Entity (with many fields) 
