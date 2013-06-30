@@ -25,14 +25,36 @@ class OrmSystem extends SystemUnderTest
      */
     public function setUp()
     {
-        require_once $this->rootPath . "/lib/Doctrine/ORM/Tools/Setup.php";
+        require_once $this->rootPath . "/lib/Doctrine/ORM/Version.php";
 
-        \Doctrine\ORM\Tools\Setup::registerAutoloadGit($this->rootPath);
+        if (version_compare(\Doctrine\ORM\Version::VERSION, '2.3.99') > 0) {
+            require_once $this->rootPath . "/vendor/autoload.php";
+
+            $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Orm"));
+        } else if (version_compare(\Doctrine\ORM\Version::VERSION, '2.2.99') > 0) {
+            require_once $this->rootPath . "/lib/Doctrine/ORM/Tools/Setup.php";
+
+            \Doctrine\ORM\Tools\Setup::registerAutoloadGit($this->rootPath);
+
+            $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Orm"));
+        } else {
+            require_once $this->rootPath . "/lib/vendor/doctrine-common/lib/Doctrine/Common/Autoloader.php";
+
+            $loader = new \Doctrine\Common\Autoloader("Doctrine\ORM", $this->rootPath . "/lib/");
+            $loader->register();
+
+            $loader = new \Doctrine\Common\Autoloader("Doctrine\DBAL", $this->rootPath . "/lib/vendor/doctrine-dbal/lib");
+            $loader->register();
+
+            $loader = new \Doctrine\Common\Autoloader("Doctrine\Common", $this->rootPath . "/lib/vendor/doctrine-common/lib");
+            $loader->register();
+
+            $config = new \Doctrine\ORM\Configuration();
+            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver());
+        }
 
         $cache = new \Doctrine\Common\Cache\ArrayCache();
         $this->queryCount = new DbalQueryCountLogger();
-
-        $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Orm"));
 
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache); // not sql query cache, but dql query parsing cache.
@@ -57,9 +79,7 @@ class OrmSystem extends SystemUnderTest
         }
         $schemaTool->createSchema($classes);
 
-        $this->em->getProxyFactory()->generateProxyClasses(array(
-            $this->em->getClassMetadata('Perf\Orm\Author')
-            ), __DIR__ . '/proxies');
+        $this->em->getProxyFactory()->generateProxyClasses($classes, __DIR__ . '/proxies');
     }
 
     /**
