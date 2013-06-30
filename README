@@ -1,0 +1,32 @@
+Requirements
+------------
+
+* linux or bsd system
+* PHP 5.2 or greater
+* pdo_sqlite
+
+Running All The Benchmarks
+--------------------------
+
+    > cd /path/to/php-orm-benchmark
+    > php TestRunner.php
+
+Running One Of The Benchmarks
+-----------------------------
+
+    > cd /path/to/php-orm-benchmark
+    > cd propel_15
+    > php TestRunner.php
+
+Test Scenarios
+--------------
+
+1. Mass insertion: Tests model objects and save() operations.
+
+2. Retrieve By Pk: Tests basic hydration
+
+3. Complex Query an OR but no hydration: Tests Query parsing
+
+4. Basic Query with 5 results: Tests hydration and collections
+
+5. Query with join: Tests join hydration
