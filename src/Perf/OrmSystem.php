@@ -38,19 +38,19 @@ class OrmSystem extends SystemUnderTest
 
             $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Orm"));
         } else {
-            require_once $this->rootPath . "/lib/vendor/doctrine-common/lib/Doctrine/Common/Autoloader.php";
+            require_once $this->rootPath . "/lib/vendor/doctrine-common/lib/Doctrine/Common/ClassLoader.php";
 
-            $loader = new \Doctrine\Common\Autoloader("Doctrine\ORM", $this->rootPath . "/lib/");
+            $loader = new \Doctrine\Common\ClassLoader("Doctrine\ORM", $this->rootPath . "/lib/");
             $loader->register();
 
-            $loader = new \Doctrine\Common\Autoloader("Doctrine\DBAL", $this->rootPath . "/lib/vendor/doctrine-dbal/lib");
+            $loader = new \Doctrine\Common\ClassLoader("Doctrine\DBAL", $this->rootPath . "/lib/vendor/doctrine-dbal/lib");
             $loader->register();
 
-            $loader = new \Doctrine\Common\Autoloader("Doctrine\Common", $this->rootPath . "/lib/vendor/doctrine-common/lib");
+            $loader = new \Doctrine\Common\ClassLoader("Doctrine\Common", $this->rootPath . "/lib/vendor/doctrine-common/lib");
             $loader->register();
 
             $config = new \Doctrine\ORM\Configuration();
-            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver());
+            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(__DIR__ . "/Orm"));
         }
 
         $cache = new \Doctrine\Common\Cache\ArrayCache();
