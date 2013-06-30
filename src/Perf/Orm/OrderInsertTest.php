@@ -9,6 +9,8 @@ class OrderInsertTest extends PerformanceTest
 {
     protected function performTest(SystemUnderTest $systemUnderTest, $currentExecution)
     {
+        $systemUnderTest->requiresFlush = true;
+
         $order = new Order();
         for ($i = 0; $i < 5; $i++) {
             $order->addItem("Product $currentExecution-$i", $i * 10, $i);

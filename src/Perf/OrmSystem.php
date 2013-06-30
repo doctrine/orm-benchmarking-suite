@@ -3,7 +3,6 @@
 namespace Perf;
 
 use Perf\Suite\SystemUnderTest;
-use Exception;
 
 class OrmSystem extends SystemUnderTest
 {
@@ -14,6 +13,7 @@ class OrmSystem extends SystemUnderTest
     public $books = array();
     public $authors = array();
     public $queryCount;
+    public $requiresFlush = false;
     private $rootPath;
 
     public function __construct($rootPath)
@@ -97,6 +97,7 @@ class OrmSystem extends SystemUnderTest
     {
         $this->em->clear();
         $this->queryCount->count = 0;
+        $this->requiresFlush = false;
     }
 
     /**
@@ -112,7 +113,10 @@ class OrmSystem extends SystemUnderTest
      */
     public function end()
     {
-        $this->em->flush();
+        if ($this->requiresFlush) {
+            $this->em->flush();
+        }
+
         $this->em->commit();
     }
 

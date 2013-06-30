@@ -9,6 +9,8 @@ class BookInsertionTest extends PerformanceTest
 {
     protected function performTest(SystemUnderTest $systemUnderTest, $currentExecution)
     {
+        $systemUnderTest->requiresFlush = true;
+
         $author = $systemUnderTest->authors[array_rand($systemUnderTest->authors)];
         $author = $systemUnderTest->em->getReference('Perf\Orm\Author', $author->id);
 
