@@ -13,7 +13,7 @@ if (!isset($argv[2])) {
 $currentPath = realpath(dirname($argv[0]));
 $path = $argv[1];
 
-$lines = array('master', $argv[2]);
+$lines = array('master', $argv[2], 'master', $argv[2], 'master', $argv[2]);
 $version = 0;
 
 foreach ($lines as $line) {
