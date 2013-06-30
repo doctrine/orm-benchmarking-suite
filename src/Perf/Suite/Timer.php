@@ -1,5 +1,7 @@
 <?php
 
+namespace Perf\Suite;
+
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -16,7 +18,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfTimer.class.php 9079 2008-05-20 00:38:07Z Carl.Vondrick $
  */
-class sfTimer
+class Timer
 {
   protected
     $startTime = null,

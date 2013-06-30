@@ -1,36 +1,24 @@
 <?php
 
-require_once dirname(__FILE__) . '/../AbstractTestSuite.php';
-
-//require_once "models/Author.php";
-//require_once "models/Book.php";
+namespace Perf;
 
 class Doctrine2TestSuite extends AbstractTestSuite
 {
     /**
-     *
      * @var \Doctrine\ORM\EntityManager
      */
     private $em = null;
 
-    /**
-     *
-     * @var Doctrine\Common\Cache\ApcCache
-     */
-    private $cache = null;
-
     public function initialize()
     {
-        require_once "/home/benny/code/php/wsnetbeans/doctrine2/lib/Doctrine/ORM/Tools/Setup.php";
-
         \Doctrine\ORM\Tools\Setup::registerAutoloadGit("/home/benny/code/php/wsnetbeans/doctrine2");
 
-        $this->cache = new Doctrine\Common\Cache\ArrayCache();
+        $cache = new Doctrine\Common\Cache\ArrayCache();
 
         $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/models"));
 
-        $config->setMetadataCacheImpl($this->cache);
-        $config->setQueryCacheImpl($this->cache); // not sql query cache, but dql query parsing cache.
+        $config->setMetadataCacheImpl($cache);
+        $config->setQueryCacheImpl($cache); // not sql query cache, but dql query parsing cache.
 
         $config->setProxyDir(__DIR__ . "/proxies");
         $config->setProxyNamespace('Proxies');

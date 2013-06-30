@@ -1,4 +1,6 @@
 <?php
+namespace Perf\Orm;
+
 /**
  * @Entity
  */
