@@ -19,4 +19,9 @@ class DbalQueryCountLogger implements SQLLogger
     {
         $this->count++;
     }
+
+    public function logSQL($sql, array $params = null, $executionMS = null)
+    {
+        $this->count++;
+    }
 }

@@ -3,6 +3,7 @@
 namespace Perf;
 
 use Perf\Suite\SystemUnderTest;
+use Exception;
 
 class OrmSystem extends SystemUnderTest
 {

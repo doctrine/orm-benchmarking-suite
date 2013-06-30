@@ -8,6 +8,8 @@ if (!isset($argv[1])) {
 $currentPath = realpath(dirname($argv[0]));
 $path = $argv[1];
 
+exit;
+
 chdir($path);
 $log = shell_exec("git tag -l");
 $lines = explode("\n", $log);
@@ -28,13 +30,17 @@ foreach ($lines as $line) {
 
     $output = array();
     $return = 0;
-    $result = exec('php ' . __DIR__ . '/run.php ' . escapeshellarg($path), $output, $return );
+    $result = exec('php ' . __DIR__ . '/run.php ' . escapeshellarg($path) . ' 2>/dev/null', $output, $return );
 
     if ($return !== 0) {
         continue;
     }
 
     $result = json_decode($result, true);
+
+    if (!is_array($result)) {
+        continue;
+    }
 
     if ($version === 0) {
         $header = 'Version;' . implode(';', array_keys($result));

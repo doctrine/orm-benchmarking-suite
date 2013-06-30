@@ -20,7 +20,7 @@ class OrderItem
      */
     public $productName;
     /**
-     * @Column(type="float")
+     * @Column(type="integer")
      */
     public $price;
     /**
